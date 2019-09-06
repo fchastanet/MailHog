@@ -11,7 +11,6 @@ RUN apk --no-cache add --virtual build-dependencies \
   && export GOPATH=/root/gocode \
   && git clone https://github.com/hdpe/MailHog.git /root/gocode/src/github.com/mailhog/MailHog \
   && cd /root/gocode/src/github.com/mailhog/MailHog \
-  && rm -r vendor \
   && go get ./... \
   && ls -lah /root/gocode/src/github.com/mailhog/ \
   && cd /root/gocode/src/github.com/mailhog/MailHog-Server && git remote set-url origin https://github.com/hdpe/MailHog-Server.git && git fetch && git reset --hard origin/master \
