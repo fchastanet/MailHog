@@ -13,9 +13,9 @@ RUN apk --no-cache add --virtual build-dependencies \
   && git clone https://github.com/hdpe/MailHog.git /root/gocode/src/github.com/mailhog/MailHog \
   && cd /root/gocode/src/github.com/mailhog/MailHog \
   && go get ./... \
-  && (cd /root/gocode/src/github.com/mailhog/MailHog-Server && git remote set-url origin https://github.com/hdpe/MailHog-Server.git && git fetch && git reset --hard origin/master) \
-  && (cd /root/gocode/src/github.com/mailhog/data && git remote set-url origin https://github.com/hdpe/data.git && git fetch && git reset --hard origin/master) \
-  && (cd /root/gocode/src/github.com/mailhog/http && git remote set-url origin https://github.com/hdpe/http.git && git fetch && git reset --hard origin/master) \
+  && (cd /root/gocode/src/github.com/mailhog/MailHog-Server && git remote set-url origin https://github.com/hdpe/MailHog-Server.git && git fetch && git reset --hard origin/master && cp -r . ../MailHog/vendor/github.com/) \
+  && (cd /root/gocode/src/github.com/mailhog/data && git remote set-url origin https://github.com/hdpe/data.git && git fetch && git reset --hard origin/master && cp -r . ../MailHog/vendor/github.com/) \
+  && (cd /root/gocode/src/github.com/mailhog/http && git remote set-url origin https://github.com/hdpe/http.git && git fetch && git reset --hard origin/master && cp -r . ../MailHog/vendor/github.com/) \
   && go install -i .
 
 # stage 2
