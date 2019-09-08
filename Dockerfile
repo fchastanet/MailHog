@@ -14,6 +14,7 @@ RUN apk --no-cache add --virtual build-dependencies \
   && go get ./... \
   && (cd /root/gocode/src/github.com/mailhog/MailHog-Server && git remote set-url origin https://github.com/hdpe/MailHog-Server.git && git fetch && git reset --hard origin/master) \
   && (cd /root/gocode/src/github.com/mailhog/data && git remote set-url origin https://github.com/hdpe/data.git && git fetch && git reset --hard origin/master) \
+  && (cd /root/gocode/src/github.com/mailhog/http && git remote set-url origin https://github.com/hdpe/http.git && git fetch && git reset --hard origin/master) \
   && go install -i . \
   && mv /root/gocode/bin/MailHog /usr/local/bin \
   && rm -rf /root/gocode \
