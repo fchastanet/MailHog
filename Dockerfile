@@ -2,6 +2,7 @@
 # MailHog Dockerfile
 #
 
+# stage 1
 FROM golang:alpine
 
 # Install MailHog:
@@ -15,11 +16,13 @@ RUN apk --no-cache add --virtual build-dependencies \
   && (cd /root/gocode/src/github.com/mailhog/MailHog-Server && git remote set-url origin https://github.com/hdpe/MailHog-Server.git && git fetch && git reset --hard origin/master) \
   && (cd /root/gocode/src/github.com/mailhog/data && git remote set-url origin https://github.com/hdpe/data.git && git fetch && git reset --hard origin/master) \
   && (cd /root/gocode/src/github.com/mailhog/http && git remote set-url origin https://github.com/hdpe/http.git && git fetch && git reset --hard origin/master) \
-  && go install -i . \
-  && mv /root/gocode/bin/MailHog /usr/local/bin \
-  && rm -rf /root/gocode \
-  && apk del --purge build-dependencies
+  && go install -i .
 
+# stage 2
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+
+COPY --from=0 /root/gocode/bin/MailHog /usr/local/bin
 COPY MailHog-entrypoint.sh /usr/local/bin/
 
 # Add mailhog user/group with uid/gid 1000.
