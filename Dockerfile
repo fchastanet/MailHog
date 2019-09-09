@@ -12,17 +12,21 @@ RUN apk --no-cache add --virtual build-dependencies \
   && export GOPATH=/root/gocode \
   && git clone https://github.com/hdpe/MailHog.git /root/gocode/src/github.com/mailhog/MailHog \
   && cd /root/gocode/src/github.com/mailhog/MailHog \
-  && go get ./... \
-  && (cd /root/gocode/src/github.com/mailhog/MailHog-Server && git remote set-url origin https://github.com/hdpe/MailHog-Server.git && git fetch && git reset --hard origin/master && cp -r . ../MailHog/vendor/github.com/) \
-  && (cd /root/gocode/src/github.com/mailhog/data && git remote set-url origin https://github.com/hdpe/data.git && git fetch && git reset --hard origin/master && cp -r . ../MailHog/vendor/github.com/) \
-  && (cd /root/gocode/src/github.com/mailhog/http && git remote set-url origin https://github.com/hdpe/http.git && git fetch && git reset --hard origin/master && cp -r . ../MailHog/vendor/github.com/) \
-  && go install -i .
+  && MAILHOG_REPO_BASE=https://github.com/hdpe \
+  && MAILHOG_VENDOR_BASE=vendor/github.com/mailhog \
+  && rm -rf "$MAILHOG_VENDOR_BASE"/data \
+  && rm -rf "$MAILHOG_VENDOR_BASE"/http \
+  && rm -rf "$MAILHOG_VENDOR_BASE"/MailHog-Server \
+  && git clone "$MAILHOG_REPO_BASE/data" "$MAILHOG_VENDOR_BASE/data" \
+  && git clone "$MAILHOG_REPO_BASE/http" "$MAILHOG_VENDOR_BASE/http" \
+  && git clone "$MAILHOG_REPO_BASE/MailHog-Server" "$MAILHOG_VENDOR_BASE/MailHog-Server" \
+  && GOOS=linux go build
 
 # stage 2
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 
-COPY --from=0 /root/gocode/bin/MailHog /usr/local/bin
+COPY --from=0 /root/gocode/src/github.com/mailhog/MailHog/MailHog /usr/local/bin
 COPY MailHog-entrypoint.sh /usr/local/bin/
 
 # Add mailhog user/group with uid/gid 1000.
