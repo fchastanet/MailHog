@@ -17,11 +17,9 @@ RUN apk --no-cache add --virtual build-dependencies \
   && rm -rf "$MAILHOG_VENDOR_BASE"/data \
   && rm -rf "$MAILHOG_VENDOR_BASE"/http \
   && rm -rf "$MAILHOG_VENDOR_BASE"/MailHog-Server \
-  && rm -rf "$MAILHOG_VENDOR_BASE"/storage \
   && git clone "$MAILHOG_REPO_BASE/data" "$MAILHOG_VENDOR_BASE/data" \
   && git clone "$MAILHOG_REPO_BASE/http" "$MAILHOG_VENDOR_BASE/http" \
   && git clone "$MAILHOG_REPO_BASE/MailHog-Server" "$MAILHOG_VENDOR_BASE/MailHog-Server" \
-  && git clone "$MAILHOG_REPO_BASE/storage" "$MAILHOG_VENDOR_BASE/storage" \
   && GOOS=linux go build
 
 # stage 2
