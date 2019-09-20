@@ -7,8 +7,13 @@ FROM golang:alpine
 
 # Install MailHog:
 ARG MAILHOG_REPO_BASE_URL=https://github.com/fchastanet
-ARG MAILHOG_UI_VENDOR_URL=https://github.com/simonbru/MailHog-UI
+ARG DATA_REPO_BASE_URL=https://github.com/hdpe
+ARG HTTP_REPO_BASE_URL=https://github.com/hdpe
+ARG MAILHOG_SERVER_REPO_BASE_URL=https://github.com/hdpe
+ARG MAILHOG_UI_REPO_BASE_URL=https://github.com/simonbru
 ARG MAILHOG_VENDOR_BASE_DIR=https://github.com/hdpe
+ARG STORAGE_REPO_BASE_URL=https://github.com/hdpe
+ARG SMTP_REPO_BASE_URL=https://github.com/hdpe
 ARG VERSION=1.0.1
 
 RUN true \
@@ -24,12 +29,12 @@ RUN true \
     && rm -rf "${MAILHOG_VENDOR_BASE_DIR}/MailHog-UI" \
     && rm -rf "${MAILHOG_VENDOR_BASE_DIR}/smtp" \
     && rm -rf "${MAILHOG_VENDOR_BASE_DIR}/storage" \
-    && git clone "${MAILHOG_REPO_BASE_URL}/data" "${MAILHOG_VENDOR_BASE_DIR}/data" \
-    && git clone "${MAILHOG_REPO_BASE_URL}/http" "${MAILHOG_VENDOR_BASE_DIR}/http" \
-    && git clone "${MAILHOG_REPO_BASE_URL}/MailHog-Server" "${MAILHOG_VENDOR_BASE_DIR}/MailHog-Server" \
-    && git clone "${MAILHOG_UI_VENDOR_URL}" "${MAILHOG_VENDOR_BASE_DIR}/MailHog-UI" \
-    && git clone "${MAILHOG_REPO_BASE_URL}/storage" "${MAILHOG_VENDOR_BASE_DIR}/storage" \
-    && git clone "${MAILHOG_REPO_BASE_URL}/smtp" "${MAILHOG_VENDOR_BASE_DIR}/smtp" \
+    && git clone "${DATA_REPO_BASE_URL}/data" "${MAILHOG_VENDOR_BASE_DIR}/data" \
+    && git clone "${HTTP_REPO_BASE_URL}/http" "${MAILHOG_VENDOR_BASE_DIR}/http" \
+    && git clone "${MAILHOG_SERVER_REPO_BASE_URL}/MailHog-Server" "${MAILHOG_VENDOR_BASE_DIR}/MailHog-Server" \
+    && git clone "${MAILHOG_UI_REPO_BASE_URL}/MailHog-UI" "${MAILHOG_VENDOR_BASE_DIR}/MailHog-UI" \
+    && git clone "${STORAGE_REPO_BASE_URL}/storage" "${MAILHOG_VENDOR_BASE_DIR}/storage" \
+    && git clone "${SMTP_REPO_BASE_URL}/smtp" "${MAILHOG_VENDOR_BASE_DIR}/smtp" \
     && GOOS=linux go build
 
 # stage 2
